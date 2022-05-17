@@ -1,0 +1,35 @@
+By Sebastian Matiz
+
+Project Background / Goals:
+**
+ very naive in terms of training an accurate model, this project was to show the importance
+ of parallelizing labeling training data.
+**
+For our purposes, a single transaction is the buying and selling of a single security.
+Given price action data, I would like to label the best K transactions per day to achieve maximum profit. 
+We will use this labeled data as training data for our neural network.
+The neural network will hopefully identify signals in the data that regular algorithms / humans may not be able to catch
+These signals will allow us to make accurate predictions
+
+About the files:
+read_price_data.cpp - this file reads in raw price data how Kraken has it, and pre processes it into unlabeled_price_data_csv folder
+label_k_transactions.cpp - this file has the actual algo used to label price data
+driver.cpp - this is our main driver that launches the threads for multi-threaded execution
+driver_seq.cpp - this is our main drive for sequential execution
+
+To Execute read_price_data.cpp:
+    - g++ read_price_data.cpp -o read.o
+
+To Execute driver.cpp:
+    - First compile label_k_transactions.cpp
+        - g++ -c label_k_transactions.cpp -o label.o
+    - Then link it with driver.cpp compilation
+        - g++ driver.cpp label.o -fopenmp -o run.o
+        - ./run.o
+
+To Exectute driver_seq.cpp:
+    - First compile label_k_transactions.cpp
+        - g++ -c label_k_transactions.cpp -o label.o
+    - Then link it with driver_seq.cpp compilation
+        - g++ driver_seq.cpp label.o -o run_seq.o
+        - ./run_seq.o
